@@ -1,0 +1,143 @@
+body {
+    font-family: "Open Sans", sans-serif;
+}
+.text {
+    font-size: 14px;
+    color: #888;
+    margin-top: 16px;
+    line-height: 22px;
+}
+.tac { text-align: center !important; }
+.tal { text-align: left !important; }
+.tar { text-align: right !important; }
+.taj { text-align: justify !important; }
+.sb { font-weight: 600; }
+.b { font-weight: 800; }
+.green { color: #5D9730 !important; }
+.blue { color: #29C !important; }
+.orange { color: #FF9620 !important; }
+.grey { color: #BBB !important; }
+.red { color: #D45454 !important; }
+.ns {
+    -webkit-touch-callout: none;
+    user-select: none;
+    cursor: default;
+}
+.i { font-style: italic; }
+.caps { text-transform: uppercase; }
+
+#si_logo {
+    height: 128px;
+}
+.headerContainer h1 {
+    line-height: 352px;
+    height: 224px;
+    margin: 0;
+    font-size: 60px;
+    text-transform: uppercase;
+    text-align: center;
+    color: #888;
+    background: url("/img/si_128.png") no-repeat center top;
+}
+.headerContainer h2 {
+    margin: 0;
+    text-align: center;
+    font-size: 16px;
+    color: #AAA;
+    text-transform: uppercase;
+}
+.headerContainer {
+    margin-bottom: 24px;
+}
+
+#si_intro {
+    margin-bottom: 40px;
+}
+
+input:focus {
+    outline: none;
+}
+#si_cssRulesBox {
+    margin-top: 8px;
+}
+#si_addUrlBox, #si_cssRulesBox, #si_rulesList {
+    box-sizing: border-box;
+    height: 24px;
+    padding: 4px;
+    border: 1px #DDD solid;
+    color: #AAA;
+    transition-duration: 350ms;
+    border-radius: 3px;
+}
+#si_addUrlBox:focus, #si_cssRulesBox:focus {
+    border-color: #28C;
+    color: #777;
+}
+#si_cssRulesBox {
+    min-height: 176px;
+    font-family: "Ubuntu Mono", "Consolas", monospace;
+    transition-duration: 0;
+    max-width: 340px;
+    outline: none;
+}
+#si_rulesList {
+    height: auto;
+    margin: 0;
+    outline: none;
+}
+
+input[type=button] {
+    box-sizing: border-box;
+    border: none;
+    width: 100%;
+    height: 24px;
+    background: #28C;
+    border-radius: 3px;
+    color: #FFF;
+    font-weight: 700;
+    font-size: 12px;
+    cursor: pointer;
+    transition-duration: 250ms;
+    margin-bottom: 8px;
+}
+input[type=button]:hover {
+    background: #2c97de;
+}
+input[type=button]:active {
+    background: #27A;
+}
+input[type=button].warn {
+    background: #D45454;
+}
+input[type=button].warn:hover {
+    background: #e36262;
+}
+input[type=button].warn:active {
+    background: #c34b4b;
+}
+
+select {
+    height: 208px !important;
+}
+option {
+    color: #777;
+    text-transform: lowercase;
+}
+
+#si_copyright {
+    font-size: 13px;
+    color: #BBB;
+    margin-top: 32px;
+}
+
+#si_fork {
+    color: #2AF;
+    text-decoration: none;
+    font-size: 14px;
+    padding-bottom: 3px;
+    transition-duration: 500ms;
+    border-bottom: 1px transparent dashed;
+}
+#si_fork:hover {
+    border-bottom: 1px #2AF dashed;
+}

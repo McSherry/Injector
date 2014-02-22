@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Options &ndash; Style Injector</title>
+        <link href="css/960_16_col.css" type="text/css" rel="stylesheet"/>
+        <link href="css/options.css" type="text/css" rel="stylesheet"/>
+        <link href="css/fonts/opensans.css" type="text/css" rel="stylesheet"/>
+        <link href="css/fonts/ubuntu.css" type="text/css" rel="stylesheet"/>
+        <script type="text/javascript" src="js/jquery-2.1.0.min.js"></script>
+        <script type="text/javascript" src="js/option.js"></script>
+    </head>
+    <body>
+        <div class="container_16 headerContainer">
+            <div class="grid_10 prefix_3">
+                <h1>Style Injector</h1>
+            </div>
+            <div class="clear"></div>
+            <div class="grid_4 prefix_6">
+                <h2>Version 0.1.0</h2>
+            </div>
+        </div>
+        <div class="container_16 contentContainer">
+            <div class="grid_10 prefix_3" id="si_intro">
+                <p class="text tac">
+                    <span class="sb">Style Injector</span> is a helpful utility allowing users to inject CSS
+                    rules into websites of their choice.
+                </p>
+                <p class="text tac">
+                    It was created after this functionality (achieved via <span class="i">Custom.css</span>)
+                    was removed from Chrome in versions 32 onward. <span class="sb">SI</span> provides much
+                    the same functionality, although pages will have to be reloaded when rules are modified,
+                    as they do not update &quot;on-the-fly&quot; as <span class="i">Custom.css</span> rules
+                    did.
+                </p>
+            </div>
+            <div class="clear"></div>
+            <div class="grid_8">
+                <div class="grid_2 alpha">
+                    <input type="button" id="si_addUrlButton" class="grid_2 omega" value="Add"/>
+                    <input type="button" id="si_resetUrlButton" class="grid_2 omega warn" value="Reset"/>
+                </div>
+                <div class="grid_6 omega">
+                <input type="text" class="grid_6 alpha omega" id="si_addUrlBox" placeholder="The website's domain, e.g. www.google.com"/>
+                    <div class="clear"></div>
+                    <textarea wrap="off" class="grid_6 alpha omega" id="si_cssRulesBox" placeholder="Your CSS rules."></textarea>
+                </div>
+            </div>
+            <div class="grid_8">
+                <select class="grid_6 alpha" id="si_rulesList" multiple>
+                    
+                </select>
+                <input type="button" class="warn grid_2 omega" id="si_removeSetRule" value="Remove"/>
+            </div>
+            <div class="clear"></div>
+            <div class="grid_6 prefix_5">
+                <p class="text tac" id="si_copyright">
+                    Copyright 2014 &copy; Liam McSherry
+                </p>
+                <div class="clear"></div>
+                <div class="grid_4 prefix_1">
+                    <a class="text tac" id="si_fork" href="https://github.com/McSherry/StyleInjector">
+                        Fork <span class="b">Style Injector</span> on GitHub
+                    </a>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
