@@ -1,4 +1,5 @@
 *.ttf
+*.woff
 *.png
 jquery-2.1.0.min.js
 960_16_col.css
