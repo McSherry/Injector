@@ -1,7 +1,14 @@
-//chrome.storage.local.remove("rules");
-//chrome.storage.local.set({"rules": [{"domain": "107.167.86.240", "rule": "body { background: #D45454; }"}]});
+function createDefaultRuleStore() {
+    chrome.storage.local.get("rules", function(items) {
+        if (typeof items["rules"] === "undefined") {
+            chrome.storage.local.set({"rules":[]}, function() {});
+        }
+    });
+}
 
 function loadStoredRulesToSelectBox() {
+    createDefaultRuleStore();
+    
     chrome.storage.local.get("rules", function(items) {
         //console.log(items);
         if (typeof items["rules"] !== "undefined") {
@@ -16,6 +23,8 @@ function loadStoredRulesToSelectBox() {
 }
 
 function addRuleToBeStored() {
+    createDefaultRuleStore();
+    
     if (
         $("#si_addUrlBox").val() != 0 &&
         $("#si_cssRulesBox").val() != 0
@@ -50,6 +59,8 @@ function addRuleToBeStored() {
 }
 
 function removeRuleFromStore() {
+    createDefaultRuleStore();
+    
     $("#si_rulesList").val().forEach(function(ruleListItem) {
         console.log(ruleListItem);
         chrome.storage.local.get("rules", function(rules) {
@@ -71,6 +82,7 @@ function removeRuleFromStore() {
 }
 
 $(function() {
+    createDefaultRuleStore();
     loadStoredRulesToSelectBox();
     
     $("#si_addUrlButton").on("click", addRuleToBeStored);

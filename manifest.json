@@ -6,7 +6,7 @@
 	"manifest_version": 2,
 	"name": "Style Injector",
 	"description": "A handy utility to replace Chrome's removed 'Custom.css' functionality.",
-	"version": "0.1.0",
+	"version": "0.2.0",
 	"icons": {
 		"32": "img/si_32.png",
 		"64": "img/si_64.png",
