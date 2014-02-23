@@ -87,4 +87,7 @@ $(function() {
     
     $("#si_addUrlButton").on("click", addRuleToBeStored);
     $("#si_removeSetRule").on("click", removeRuleFromStore);
+    $("#si_resetUrlButton").on("click", function() {
+        $("#si_addRuleInputsCtnr *").val("");
+    });
 });
