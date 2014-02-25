@@ -1,8 +1,4 @@
 {
-	"content_scripts": [{
-		"js": [ "js/style_injector.js" ],
-		"matches": [ "<all_urls>" ]
-	}],
 	"manifest_version": 2,
 	"name": "Style Injector",
 	"description": "A handy utility to replace Chrome's removed 'Custom.css' functionality.",
@@ -15,7 +11,12 @@
 	},
 	"minimum_chrome_version": "32.0",
 	"permissions": [
-		"tabs", "storage"
+		"storage"
 	],
-	"options_page": "options.html"
+	"options_page": "options.html",
+    "update_url": "http://injector.io/api/update.xml",
+	"content_scripts": [{
+		"js": [ "js/style_injector.js" ],
+		"matches": [ "<all_urls>" ]
+	}]
 }
