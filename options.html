@@ -49,19 +49,23 @@
                 <select class="grid_6 alpha" id="si_rulesList" multiple>
                     
                 </select>
-                <input type="button" class="warn grid_2 omega" id="si_removeSetRule" value="Remove"/>
+                <div class="grid_2 omega">
+                    <input type="button" class="grid_2 alpha omega" id="si_editSetRule" value="Edit"/>
+                    <div class="clear"></div>
+                    <input type="button" disabled class="grid_2 alpha omega" id="si_disableSetRule" value="Disable"/>
+                    <div class="clear"></div>
+                    <input type="button" class="warn grid_2 alpha omega" id="si_removeSetRule" value="Remove"/>
+                </div>
             </div>
             <div class="clear"></div>
-            <div class="grid_6 prefix_5">
+            <div class="grid_6 prefix_5 tac">
                 <p class="text tac" id="si_copyright">
                     Copyright 2014 &copy; Liam McSherry
                 </p>
                 <div class="clear"></div>
-                <div class="grid_4 prefix_1">
-                    <a class="text tac" id="si_fork" href="https://github.com/McSherry/StyleInjector">
-                        Fork <span class="b">Style Injector</span> on GitHub
-                    </a>
-                </div>
+                <a class="text tac" id="si_fork" href="http://injector.io">
+                    injector.io
+                </a>
             </div>
         </div>
     </body>
