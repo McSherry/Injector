@@ -1,6 +1,7 @@
 {
 	"manifest_version": 2,
 	"name": "Injector",
+    "short_name": "Injector",
 	"description": "A handy utility to replace Chrome's removed 'Custom.css' functionality.",
 	"version": "0.2.0",
 	"icons": {
