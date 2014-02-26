@@ -15,7 +15,6 @@
 		"storage"
 	],
 	"options_page": "options.html",
-    "update_url": "http://injector.io/api/update.xml",
 	"content_scripts": [{
 		"js": [ "js/style_injector.js" ],
 		"matches": [ "<all_urls>" ]
