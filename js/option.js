@@ -158,4 +158,18 @@ $(function() {
     $("#si_removeSetRule").on("click", removeRuleFromStore);
     $("#si_resetUrlButton").on("click", resetInputFields);
     $("#si_editSetRule").on("click", editRuleFromStore);
+        
+    $("#si_cssRulesBox").keydown(function (key) {
+        if (key.keyCode == 9) {
+            $(this).val(
+                $(this).val().substring(0, this.selectionStart) +
+                "    " +
+                $(this).val().substring(this.selectionEnd)
+            );
+            
+            this.selectionStart = this.selectionEnd = this.selectionStart + 1;
+            
+            key.preventDefault();
+        }
+    });
 });
