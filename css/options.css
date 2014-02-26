@@ -115,6 +115,15 @@ input[type=button].warn:hover {
 input[type=button].warn:active {
     background: #c34b4b;
 }
+input[type=button][disabled] {
+    cursor: default;
+    background: #FAFAFA;
+    border: 1px #DDD solid;
+    color: #BBB;
+}
+input[type=button][disabled]:hover {
+    background: #FAFAFA;
+}
 
 select {
     height: 208px !important;
