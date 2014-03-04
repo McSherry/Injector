@@ -26,6 +26,17 @@ function loadStoredRulesToSelectBox() {
             });
         }
     });
+    
+    chrome.storage.local.get("disabled_rules", function(items) {
+        //console.log(items);
+        if (typeof items["disabled_rules"] !== "undefined") {
+            items["disabled_rules"].forEach(function(item) {
+                $("#si_rulesList").append(
+                    "<option class='disabled' value='" + item["domain"] + "'>" + item["domain"] + "</option>"
+                );
+            });
+        }
+    });
 }
 
 function addRuleToBeStored() {
@@ -156,8 +167,27 @@ function performEditOnStoredRule() {
     }
 }
 
-function disableRuleFromStore() {
+function disableRuleFromStore(ruleName) {
     createDefaultRuleStore();
+    
+    chrome.storage.local.get("rules", function(r) {
+        var disRule;
+        
+        r["rules"].forEach(function(i) {
+            if (i["domain"] === ruleName) disRule = i;
+        });
+        
+        r["rules"] = r["rules"].splice(r["rules"].indexOf(disRule, 1));
+        
+        chrome.storage.local.set({"rules": r["rules"]});
+        chrome.storage.local.get("disabled_rules", function(dr) {
+            var drules = dr["disabled_rules"];
+            
+            drules.push({"domain": disRule["domain"], "rule": disRule["rule"]});
+            
+            chrome.storage.local.set({"disabled_rules": drules});
+        });
+    });
 }
 
 $(function() {
@@ -171,10 +201,43 @@ $(function() {
         
     $("#si_rulesList").on("change", function() {
         var list = $(this);
+        var leng = list.val().length;
         
-        list.val().forEach(function(item) {
-            
-        });
+        if (leng === 0) {
+            $("#si_disableSetRule").prop("disabled", true);
+        } else if (leng === 1) {
+            chrome.storage.local.get("rules", function(rules) {
+                var matches = 0;
+                rules["rules"].forEach(function(i) {
+                    console.log("%s || %s", i["domain"], list.val()[0]);
+                    if (i["domain"] === list.val()[0]) ++matches;
+                });
+                if (matches > 0) {
+                    $("#si_disableSetRule")
+                        .addClass("warn")
+                        .val("Disable")
+                        .on("click", function() {
+                            disableRuleFromStore($("#si_rulesList").val()[0]);
+                            loadStoredRulesToSelectBox();
+                        })
+                        .prop("disabled", false)
+                } else {
+                    $("#si_disableSetRule")
+                        .removeClass("warn")
+                        .val("Enable")
+                        .prop("disabled", false);
+                }
+            });
+        } else {
+            $("#si_disableSetRule")
+                .removeClass("warn")
+                .val("Disable")
+                .prop("disabled", true);
+        }
+    });
+    $("#si_disableSetRule").on("click", function() {
+        disableRuleFromStore($("#si_rulesList").val()[0]);
+        loadStoredRulesToSelectBox();
     });
     
     $("#si_cssRulesBox").keydown(function (key) {
