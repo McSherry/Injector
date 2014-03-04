@@ -4,6 +4,12 @@ function createDefaultRuleStore() {
             chrome.storage.local.set({"rules":[]}, function() {});
         }
     });
+    
+    chrome.storage.local.get("disabled_rules", function(items) {
+        if (typeof items["disabled_rules"] === "undefined") {
+            chrome.storage.local.set({"disabled_rules":[]});
+        }
+    });
 }
 
 function loadStoredRulesToSelectBox() {
@@ -150,6 +156,10 @@ function performEditOnStoredRule() {
     }
 }
 
+function disableRuleFromStore() {
+    createDefaultRuleStore();
+}
+
 $(function() {
     createDefaultRuleStore();
     loadStoredRulesToSelectBox();
@@ -159,6 +169,14 @@ $(function() {
     $("#si_resetUrlButton").on("click", resetInputFields);
     $("#si_editSetRule").on("click", editRuleFromStore);
         
+    $("#si_rulesList").on("change", function() {
+        var list = $(this);
+        
+        list.val().forEach(function(item) {
+            
+        });
+    });
+    
     $("#si_cssRulesBox").keydown(function (key) {
         if (key.keyCode == 9) {
             $(this).val(

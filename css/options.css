@@ -132,6 +132,10 @@ option {
     color: #777;
     text-transform: lowercase;
 }
+option.disabled {
+    color: #AAA;
+    background: #EEE;
+}
 
 #si_copyright {
     font-size: 13px;
