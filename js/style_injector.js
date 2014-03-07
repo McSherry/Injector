@@ -21,7 +21,15 @@ function injectCSS(loc, norecurse) {
             console.log(rules);
             if (typeof rules["rules"] !== "undefined") {
                 rules["rules"].forEach(function (item) {
-                    if (item["domain"] === loc) {
+                    var regexRule = item["domain"];
+                    regexRule = item["domain"]  .replace("\.\*", "(\\\.)?(.+)?(\\\.)?")
+                                                .replace("\*\.", "(\\\.)?(.+)?(\\\.)?")
+                                                .replace("\*", "(\\\.)?(.+)?(\\\.)?");
+                    if (
+                        item["domain"] === loc ||
+                        loc.match(regexRule) !== null
+                            
+                    ) {
                         CSS = item["rule"];
                     }
                 });
