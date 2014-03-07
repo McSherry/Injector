@@ -4,6 +4,12 @@ function createDefaultRuleStore() {
             chrome.storage.local.set({"rules":[]}, function() {});
         }
     });
+    
+    chrome.storage.local.get("disabled_rules", function(items) {
+        if (typeof items["disabled_rules"] === "undefined") {
+            chrome.storage.local.set({"disabled_rules":[]});
+        }
+    });
 }
 
 function loadStoredRulesToSelectBox() {
@@ -16,6 +22,17 @@ function loadStoredRulesToSelectBox() {
             items["rules"].forEach(function(item) {
                 $("#si_rulesList").append(
                     "<option value='" + item["domain"] + "'>" + item["domain"] + "</option>"
+                );
+            });
+        }
+    });
+    
+    chrome.storage.local.get("disabled_rules", function(items) {
+        //console.log(items);
+        if (typeof items["disabled_rules"] !== "undefined") {
+            items["disabled_rules"].forEach(function(item) {
+                $("#si_rulesList").append(
+                    "<option class='disabled' value='" + item["domain"] + "'>" + item["domain"] + "</option>"
                 );
             });
         }
@@ -65,6 +82,7 @@ function removeRuleFromStore() {
     $("#si_rulesList").val().forEach(function(ruleListItem) {
         console.log(ruleListItem);
         chrome.storage.local.get("rules", function(rules) {
+            var has = false;
             rules["rules"].forEach(function(item) {
                 console.log("%s || %s || --> || %s",
                             item["domain"],
@@ -72,11 +90,24 @@ function removeRuleFromStore() {
                             item["domain"] === ruleListItem
                            );
                 if (item["domain"] === ruleListItem) {
+                    has = true;
                     rules["rules"].splice(rules["rules"].indexOf(item), 1);
                     chrome.storage.local.set({"rules": rules["rules"]}, function() { });
                     loadStoredRulesToSelectBox();
                 }
             });
+            
+            if (!has) {
+                chrome.storage.local.get("disabled_rules", function(dr) {
+                    dr["disabled_rules"].forEach(function(i) {
+                        if (i["domain"] === ruleListItem) {
+                            dr["disabled_rules"].splice(dr["disabled_rules"].indexOf(item), 1);
+                            chrome.storage.local.set({"disabled_rules": dr["disabled_rules"]});
+                            loadStoredRulesToSelectBox();
+                        }
+                    });
+                });
+            }
         });
         
     });
@@ -150,6 +181,54 @@ function performEditOnStoredRule() {
     }
 }
 
+function disableRuleFromStore(ruleName) {
+    createDefaultRuleStore();
+    
+    chrome.storage.local.get("rules", function(r) {
+        var disRule;
+        
+        r["rules"].forEach(function(i) {
+            if (i["domain"] === ruleName) disRule = i;
+        });
+        
+        r["rules"].splice(r["rules"].indexOf(disRule, 1));
+        
+        chrome.storage.local.set({"rules": r["rules"]});
+        chrome.storage.local.get("disabled_rules", function(dr) {
+            var drules = dr["disabled_rules"];
+            
+            drules.push({"domain": disRule["domain"], "rule": disRule["rule"]});
+            
+            chrome.storage.local.set({"disabled_rules": drules});
+            
+            $("#si_rulesList option:contains(" + disRule["domain"] + ")").addClass("disabled");
+        });
+    });
+}
+function enableRuleFromStore(ruleName) {
+    createDefaultRuleStore();
+    
+    chrome.storage.local.get("disabled_rules", function(dr) {
+        var enRule;
+        
+        dr["disabled_rules"].forEach(function(i) {
+            if (i["domain"] === ruleName) enRule = i;
+        });
+        
+        dr["disabled_rules"].splice(dr["disabled_rules"].indexOf(enRule, 1));
+        
+        chrome.storage.local.set({"disabled_rules": dr["disabled_rules"]});
+        chrome.storage.local.get("rules", function(r) {
+            var rules = r["rules"];
+            
+            rules.push({"domain": enRule["domain"], "rule": enRule["rule"]});
+            chrome.storage.local.set({"rules": rules});
+            
+            $("#si_rulesList option:contains(" + enRule["domain"] + ")").removeClass("disabled");
+        });
+    });
+}
+
 $(function() {
     createDefaultRuleStore();
     loadStoredRulesToSelectBox();
@@ -159,6 +238,55 @@ $(function() {
     $("#si_resetUrlButton").on("click", resetInputFields);
     $("#si_editSetRule").on("click", editRuleFromStore);
         
+    $("#si_rulesList").on("change", function() {
+        var list = $(this);
+        var leng = list.val().length;
+        
+        if (leng === 0) {
+            $("#si_disableSetRule").prop("disabled", true);
+        } else if (leng === 1) {
+            chrome.storage.local.get("rules", function(rules) {
+                var matches = 0;
+                rules["rules"].forEach(function(i) {
+                    console.log("%s || %s", i["domain"], list.val()[0]);
+                    if (i["domain"] === list.val()[0]) ++matches;
+                });
+                if (matches > 0) {
+                    $("#si_disableSetRule")
+                        .addClass("warn")
+                        .val("Disable")
+                        .off("click")
+                        .on("click", function() {
+                            disableRuleFromStore($("#si_rulesList").val()[0]);
+                            loadStoredRulesToSelectBox();
+                            $("#si_rulesList").prop("selected", false);
+                        })
+                        .prop("disabled", false)
+                } else {
+                    $("#si_disableSetRule")
+                        .removeClass("warn")
+                        .val("Enable")
+                        .prop("disabled", false)
+                        .off("click")
+                        .on("click", function() {
+                            enableRuleFromStore($("#si_rulesList").val()[0]);
+                            loadStoredRulesToSelectBox();
+                            $("#si_rulesList").prop("selected", false);
+                        });
+                }
+            });
+        } else {
+            $("#si_disableSetRule")
+                .removeClass("warn")
+                .val("Disable")
+                .prop("disabled", true);
+        }
+    });
+    $("#si_disableSetRule").on("click", function() {
+        disableRuleFromStore($("#si_rulesList").val()[0]);
+        loadStoredRulesToSelectBox();
+    });
+    
     $("#si_cssRulesBox").keydown(function (key) {
         if (key.keyCode == 9) {
             $(this).val(
