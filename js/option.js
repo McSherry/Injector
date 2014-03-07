@@ -82,6 +82,7 @@ function removeRuleFromStore() {
     $("#si_rulesList").val().forEach(function(ruleListItem) {
         console.log(ruleListItem);
         chrome.storage.local.get("rules", function(rules) {
+            var has = false;
             rules["rules"].forEach(function(item) {
                 console.log("%s || %s || --> || %s",
                             item["domain"],
@@ -89,11 +90,24 @@ function removeRuleFromStore() {
                             item["domain"] === ruleListItem
                            );
                 if (item["domain"] === ruleListItem) {
+                    has = true;
                     rules["rules"].splice(rules["rules"].indexOf(item), 1);
                     chrome.storage.local.set({"rules": rules["rules"]}, function() { });
                     loadStoredRulesToSelectBox();
                 }
             });
+            
+            if (!has) {
+                chrome.storage.local.get("disabled_rules", function(dr) {
+                    dr["disabled_rules"].forEach(function(i) {
+                        if (i["domain"] === ruleListItem) {
+                            dr["disabled_rules"].splice(dr["disabled_rules"].indexOf(item), 1);
+                            chrome.storage.local.set({"disabled_rules": dr["disabled_rules"]});
+                            loadStoredRulesToSelectBox();
+                        }
+                    });
+                });
+            }
         });
         
     });
@@ -177,7 +191,7 @@ function disableRuleFromStore(ruleName) {
             if (i["domain"] === ruleName) disRule = i;
         });
         
-        r["rules"] = r["rules"].splice(r["rules"].indexOf(disRule, 1));
+        r["rules"].splice(r["rules"].indexOf(disRule, 1));
         
         chrome.storage.local.set({"rules": r["rules"]});
         chrome.storage.local.get("disabled_rules", function(dr) {
@@ -186,6 +200,31 @@ function disableRuleFromStore(ruleName) {
             drules.push({"domain": disRule["domain"], "rule": disRule["rule"]});
             
             chrome.storage.local.set({"disabled_rules": drules});
+            
+            $("#si_rulesList option:contains(" + disRule["domain"] + ")").addClass("disabled");
+        });
+    });
+}
+function enableRuleFromStore(ruleName) {
+    createDefaultRuleStore();
+    
+    chrome.storage.local.get("disabled_rules", function(dr) {
+        var enRule;
+        
+        dr["disabled_rules"].forEach(function(i) {
+            if (i["domain"] === ruleName) enRule = i;
+        });
+        
+        dr["disabled_rules"].splice(dr["disabled_rules"].indexOf(enRule, 1));
+        
+        chrome.storage.local.set({"disabled_rules": dr["disabled_rules"]});
+        chrome.storage.local.get("rules", function(r) {
+            var rules = r["rules"];
+            
+            rules.push({"domain": enRule["domain"], "rule": enRule["rule"]});
+            chrome.storage.local.set({"rules": rules});
+            
+            $("#si_rulesList option:contains(" + enRule["domain"] + ")").removeClass("disabled");
         });
     });
 }
@@ -216,16 +255,24 @@ $(function() {
                     $("#si_disableSetRule")
                         .addClass("warn")
                         .val("Disable")
+                        .off("click")
                         .on("click", function() {
                             disableRuleFromStore($("#si_rulesList").val()[0]);
                             loadStoredRulesToSelectBox();
+                            $("#si_rulesList").prop("selected", false);
                         })
                         .prop("disabled", false)
                 } else {
                     $("#si_disableSetRule")
                         .removeClass("warn")
                         .val("Enable")
-                        .prop("disabled", false);
+                        .prop("disabled", false)
+                        .off("click")
+                        .on("click", function() {
+                            enableRuleFromStore($("#si_rulesList").val()[0]);
+                            loadStoredRulesToSelectBox();
+                            $("#si_rulesList").prop("selected", false);
+                        });
                 }
             });
         } else {
