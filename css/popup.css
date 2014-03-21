@@ -1,0 +1,50 @@
+body {
+    font-family: "Open Sans", sans-serif;
+    padding: 8px;
+}
+.container {
+    width: 172px;
+}
+.logo {
+    width: 64px;
+    height: 64px;
+    padding: 8px 0;
+    margin: auto;
+    background: url("/img/si_64.png") no-repeat;
+    margin-bottom: 6px;
+}
+.button {
+    box-sizing: border-box;
+    border: none;
+    margin: auto;
+    width: 90%;
+    height: 24px;
+    background: #28C;
+    border-radius: 3px;
+    color: #FFF;
+    font-weight: 700;
+    font-size: 11px;
+    cursor: pointer;
+    transition-duration: 250ms;
+    margin-bottom: 8px;
+    text-align: center;
+    line-height: 24px;
+    text-transform: uppercase;
+}
+.button:hover {
+    background: #2c97de;
+}
+.copyright {
+    font-size: 11px;
+    text-align: center;
+    color: #BBB;
+    margin-top: 26px;
+}
+.website {
+    display: block;
+    color: #3AF;
+    text-decoration: none;
+    font-size: 12px;
+    text-align: center;
+    margin-top: 6px;
+}
