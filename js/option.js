@@ -1,3 +1,5 @@
+var cm;
+
 function createDefaultRuleStore() {
     chrome.storage.local.get("rules", function(items) {
         if (typeof items["rules"] === "undefined") {
@@ -44,7 +46,7 @@ function addRuleToBeStored() {
     
     if (
         $("#si_addUrlBox").val() != 0 &&
-        $("#si_cssRulesBox").val() != 0
+        cm.getValue() != 0
     ) {
         chrome.storage.local.get("rules", function(items) {
             if (typeof items["rules"] !== "undefined") {
@@ -61,7 +63,7 @@ function addRuleToBeStored() {
                 if (doAdd) {
                     items["rules"].push({ 
                         "domain"    : $("#si_addUrlBox").val().toLowerCase(),
-                        "rule"      : $("#si_cssRulesBox").val()
+                        "rule"      : cm.getValue()
                     });
                     console.log(items["rules"]);
                     chrome.storage.local.set({"rules": items["rules"]}, function() {});
@@ -138,7 +140,7 @@ function editRuleFromStore() {
         chrome.storage.local.get("rules", function(ret) {
             ret["rules"].forEach(function(i) {
                 if (i["domain"] === editItem) {
-                    $("#si_cssRulesBox").val(i["rule"]);
+                    cm.setValue(i["rule"]);
                 }
             });
         });
@@ -160,14 +162,14 @@ function cancelEditFromStore() {
 function performEditOnStoredRule() {
     var ruleDomain = $("#si_addUrlBox").val();
     
-    if ($("#si_cssRulesBox").val() != 0) {
+    if (cm.getValue() != 0) {
         chrome.storage.local.get("rules", function(ret) {
             var ctr = 0;
             console.log(ret["rules"]);
             ret["rules"].forEach(function(i) {
                 if (ret["rules"][ctr]["domain"] === ruleDomain) {
                     console.log(ctr);
-                    ret["rules"][ctr]["rule"] = $("#si_cssRulesBox").val();
+                    ret["rules"][ctr]["rule"] = cm.getValue();
                     
                     chrome.storage.local.set({"rules": ret["rules"]});
                     
@@ -230,7 +232,7 @@ function enableRuleFromStore(ruleName) {
 }
 
 $(function() {
-    var cm = CodeMirror(document.getElementById("si_addRuleInputsCtnr"), { mode: "text/css" });
+    cm = CodeMirror(document.getElementById("si_addRuleInputsCtnr"), { mode: "text/css" });
     
     //createDefaultRuleStore();
     //loadStoredRulesToSelectBox();
