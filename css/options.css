@@ -172,3 +172,46 @@ option.disabled {
     position: relative;
     left: -4px;
 }
+
+.noticeCtnr {
+    overflow: hidden;
+    height: 0px;
+    margin-top: -24px;
+    margin-bottom: 16px;
+}
+.notice {
+    height: 48px;
+    background: #bdecff;
+    box-sizing: border-box;
+    border-left: 8px #5bbbe2 solid;
+    border-right: 8px #5bbbe2 solid;
+    font-size: 14px;
+    text-align: center;
+    color: #666;
+    line-height: 48px;
+    position: relative;
+    border-radius: 5px;
+}
+.notice .close:before { content: "x"; }
+.notice .close {
+    position: absolute;
+    height: 16px;
+    width: 16px;
+    font-weight: 600;
+    color: #FFF;
+    background: #555;
+    border-radius: 50%;
+    line-height: 14px;
+    padding: 2px;
+    font-size: 13px;
+    font-family: "Ubuntu Mono", "Consolas", monospace;
+    top: 14px;
+    right: 12px;
+    text-indent: -1px;
+    cursor: pointer;
+}
+.notice.warning {
+    background: #e67d7d;
+    border-color: #D45454;
+    color: #FFF;
+}
