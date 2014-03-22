@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Options &ndash; Style Injector</title>
+        <title>Options &ndash; Injector</title>
         <link href="css/960_16_col.css" type="text/css" rel="stylesheet"/>
         <link href="css/options.css" type="text/css" rel="stylesheet"/>
         <link href="css/fonts/opensans.css" type="text/css" rel="stylesheet"/>
         <link href="css/fonts/ubuntu.css" type="text/css" rel="stylesheet"/>
+        <link href="css/codemirror.css" type="text/css" rel="stylesheet"/>
         <script type="text/javascript" src="js/jquery-2.1.0.min.js"></script>
+        <script type="text/javascript" src="js/codemirror.js"></script>
+        <script type="text/javascript" src="js/codemirror.css.js"></script>
         <script type="text/javascript" src="js/option.js"></script>
     </head>
     <body>
@@ -41,8 +44,12 @@
                 </div>
                 <div class="grid_6 omega" id="si_addRuleInputsCtnr">
                 <input type="text" class="grid_6 alpha omega" id="si_addUrlBox" placeholder="The website's domain, e.g. www.google.com"/>
-                    <div class="clear"></div>
-                    <textarea wrap="off" class="grid_6 alpha omega" id="si_cssRulesBox" placeholder="Your CSS rules."></textarea>
+                    <div class="clear"></div><!--
+                    <textarea wrap="off" class="grid_6 alpha omega" id="si_cssRulesBox" placeholder="Your CSS rules."></textarea>-->
+                </div>
+                <div class="grid_6 prefix_2 alpha omega" id="si_saveOpts">
+                    <input type="checkbox" id="si_cssMinify" name="si_cssMinify">
+                    <label for="si_cssMinify">Minify/Compress CSS rules before saving</label>
                 </div>
             </div>
             <div class="grid_8">

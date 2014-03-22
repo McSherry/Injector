@@ -230,8 +230,10 @@ function enableRuleFromStore(ruleName) {
 }
 
 $(function() {
-    createDefaultRuleStore();
-    loadStoredRulesToSelectBox();
+    var cm = CodeMirror(document.getElementById("si_addRuleInputsCtnr"), { mode: "text/css" });
+    
+    //createDefaultRuleStore();
+    //loadStoredRulesToSelectBox();
     
     $("#si_addUrlButton").on("click", addRuleToBeStored);
     $("#si_removeSetRule").on("click", removeRuleFromStore);
