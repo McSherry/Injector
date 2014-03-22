@@ -1,3 +1,6 @@
+var cm;
+var ver = 400;
+
 function createDefaultRuleStore() {
     chrome.storage.local.get("rules", function(items) {
         if (typeof items["rules"] === "undefined") {
@@ -44,7 +47,7 @@ function addRuleToBeStored() {
     
     if (
         $("#si_addUrlBox").val() != 0 &&
-        $("#si_cssRulesBox").val() != 0
+        cm.getValue() != 0
     ) {
         chrome.storage.local.get("rules", function(items) {
             if (typeof items["rules"] !== "undefined") {
@@ -52,7 +55,11 @@ function addRuleToBeStored() {
                 var doAdd = true;
                 items["rules"].forEach(function(i) {
                     if (i["domain"] === $("#si_addUrlBox").val().toLowerCase()) {
-                        alert("Rule already exists for \"" + i["domain"] + "\"");
+                        //showNotice({
+                        //    content: "Rule already exists for &quot;" + i["domain"] + ".&quot;",
+                        //    type: "warning"
+                        //});
+                        //alert("Rule already exists for \"" + i["domain"] + "\"");
                         doAdd = false;
                     }
                 });
@@ -61,7 +68,9 @@ function addRuleToBeStored() {
                 if (doAdd) {
                     items["rules"].push({ 
                         "domain"    : $("#si_addUrlBox").val().toLowerCase(),
-                        "rule"      : $("#si_cssRulesBox").val()
+                        "rule"      : $("#si_cssMinify").prop("checked")
+                                        ?   jsmin(cm.getValue())
+                                        :   cm.getValue()
                     });
                     console.log(items["rules"]);
                     chrome.storage.local.set({"rules": items["rules"]}, function() {});
@@ -72,7 +81,10 @@ function addRuleToBeStored() {
             }
         });
     } else {
-        alert("You need to enter a domain and rules. These cannot be whitespace.");
+        showNotice({
+            content: "You must enter a domain and rules. These cannot be whitespace.",
+            type: "warning"
+        });
     }
 }
 
@@ -115,6 +127,7 @@ function removeRuleFromStore() {
 
 function resetInputFields() {
     $("#si_addRuleInputsCtnr *").val("");
+    cm.setValue("");
 }
 
 function editRuleFromStore() {
@@ -138,7 +151,7 @@ function editRuleFromStore() {
         chrome.storage.local.get("rules", function(ret) {
             ret["rules"].forEach(function(i) {
                 if (i["domain"] === editItem) {
-                    $("#si_cssRulesBox").val(i["rule"]);
+                    cm.setValue(i["rule"]);
                 }
             });
         });
@@ -160,14 +173,14 @@ function cancelEditFromStore() {
 function performEditOnStoredRule() {
     var ruleDomain = $("#si_addUrlBox").val();
     
-    if ($("#si_cssRulesBox").val() != 0) {
+    if (cm.getValue() != 0) {
         chrome.storage.local.get("rules", function(ret) {
             var ctr = 0;
             console.log(ret["rules"]);
             ret["rules"].forEach(function(i) {
                 if (ret["rules"][ctr]["domain"] === ruleDomain) {
                     console.log(ctr);
-                    ret["rules"][ctr]["rule"] = $("#si_cssRulesBox").val();
+                    ret["rules"][ctr]["rule"] = cm.getValue();
                     
                     chrome.storage.local.set({"rules": ret["rules"]});
                     
@@ -177,7 +190,11 @@ function performEditOnStoredRule() {
             });
         });
     } else {
-        alert("Your rule cannot be whitespace.\n\nIf you'd like to delete this rule, use the \"Remove\" button.");
+        showNotice({
+            content: "Rule cannot be whitespace. Use the &quot;Remove&quot; button to delete rules.",
+            type: "warning"
+        });
+        //alert("Your rule cannot be whitespace.\n\nIf you'd like to delete this rule, use the \"Remove\" button.");
     }
 }
 
@@ -229,9 +246,32 @@ function enableRuleFromStore(ruleName) {
     });
 }
 
+function clearNotice() {
+    $(".noticeCtnr").animate({height: "0px"}, 400, function() {
+        $(this).html("");
+    });
+}
+function showNotice(args) {
+    $(".noticeCtnr").animate({height: "0px"}, 400, function() {
+        $(this).html(
+            '<div class="notice ' + (typeof args.type === "undefined" ? '' : args.type) +
+                '">' +
+            '<div class="close"></div>' +
+            args.content +
+            '</div>'
+        );
+        $(this).delay(100);
+        $(this).animate({height: "48px"}, 600);
+    });
+}
+
 $(function() {
+    cm = CodeMirror(document.getElementById("si_addRuleInputsCtnr"), { mode: "text/css" });
+    
     createDefaultRuleStore();
     loadStoredRulesToSelectBox();
+    
+    $(".noticeCtnr").on("click", ".notice .close", clearNotice);
     
     $("#si_addUrlButton").on("click", addRuleToBeStored);
     $("#si_removeSetRule").on("click", removeRuleFromStore);

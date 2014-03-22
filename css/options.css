@@ -73,7 +73,7 @@ input:focus {
     border-color: #28C;
     color: #777;
 }
-#si_cssRulesBox {
+#si_cssRulesBox, .CodeMirror textarea {
     min-height: 176px;
     font-family: "Ubuntu Mono", "Consolas", monospace;
     transition-duration: 0;
@@ -153,4 +153,65 @@ option.disabled {
 }
 #si_fork:hover {
     border-bottom: 1px #2AF dashed;
+}
+
+#si_saveOpts {
+    margin-top: 16px;
+    font-size: 13px;
+    vertical-align: middle;
+    color: #AAA;
+    text-align: center;
+}
+#si_saveOpts label {
+    display: inline-block;
+    position: relative;
+    top: -2px;
+    padding-left: 2px;
+}
+#si_saveOpts input[type=checkbox] {
+    position: relative;
+    left: -4px;
+}
+
+.noticeCtnr {
+    overflow: hidden;
+    height: 0px;
+    margin-top: -24px;
+    margin-bottom: 16px;
+}
+.notice {
+    height: 48px;
+    background: #bdecff;
+    box-sizing: border-box;
+    border-left: 8px #5bbbe2 solid;
+    border-right: 8px #5bbbe2 solid;
+    font-size: 14px;
+    text-align: center;
+    color: #666;
+    line-height: 48px;
+    position: relative;
+    border-radius: 5px;
+}
+.notice .close:before { content: "x"; }
+.notice .close {
+    position: absolute;
+    height: 16px;
+    width: 16px;
+    font-weight: 600;
+    color: #FFF;
+    background: #555;
+    border-radius: 50%;
+    line-height: 14px;
+    padding: 2px;
+    font-size: 13px;
+    font-family: "Ubuntu Mono", "Consolas", monospace;
+    top: 14px;
+    right: 12px;
+    text-indent: -1px;
+    cursor: pointer;
+}
+.notice.warning {
+    background: #e67d7d;
+    border-color: #D45454;
+    color: #FFF;
 }
